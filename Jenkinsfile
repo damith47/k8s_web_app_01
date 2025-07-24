@@ -1,9 +1,13 @@
 pipeline {
     agent any
 
+    parameters {
+        string(name: 'TAG', defaultValue: '1.0.0', description: 'Docker Image Tag')
+    }
+
     environment {
         IMAGE_NAME = 'lorexhub/lorexweb1'
-        IMAGE_TAG = 'latest'
+        IMAGE_TAG = "${params.TAG}"
         KUBECONFIG = 'C:\\Users\\Damith.Patabandige\\.kube\\config'
     }
 
@@ -27,7 +31,7 @@ pipeline {
                 echo 'Logging in to Docker Hub...'
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                     bat """
-                       echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
+                        echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
                     """
                 }
             }
@@ -42,10 +46,10 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                echo 'Updating Kubernetes deployment...'
+                echo "Updating Kubernetes deployment to use image: ${IMAGE_NAME}:${IMAGE_TAG}"
                 bat """
-                   kubectl set image deployment/lorex-app-fe lorex-app-fe=${IMAGE_NAME}:${IMAGE_TAG} -n lorexapp
-                   kubectl rollout status deployment/lorex-app-fe -n lorexapp
+                    kubectl set image deployment/lorex-app-fe-deployment lorex-app-fe=${IMAGE_NAME}:${IMAGE_TAG} -n lorexapp
+                    kubectl rollout status deployment/lorex-app-fe-deployment -n lorexapp
                 """
             }
         }
@@ -53,10 +57,10 @@ pipeline {
 
     post {
         success {
-            echo "Docker image pushed and Kubernetes deployment updated successfully!"
+            echo "✅ Build, push, and deployment completed successfully with tag: ${IMAGE_TAG}"
         }
         failure {
-            echo "Build, push, or deploy failed!"
+            echo "❌ Build, push, or deploy failed."
         }
     }
 }
