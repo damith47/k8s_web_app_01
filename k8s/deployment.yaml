@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
       - name: lorex-app-fe
-        image: lorexhub/lorex-app-fe:latest
-        imagePullPolicy: Never
+        image: lorexhub/lorexweb1:latest  
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
 ---
@@ -33,4 +33,4 @@ spec:
   - protocol: TCP
     port: 80
     targetPort: 80
-    nodePort: 30082
+    nodePort: 30082  
