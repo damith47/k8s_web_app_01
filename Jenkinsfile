@@ -38,14 +38,23 @@ pipeline {
                 bat "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
             }
         }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                echo 'Updating Kubernetes deployment...'
+                bat """
+                   kubectl set image deployment/your-deployment-name your-container-name=${IMAGE_NAME}:${IMAGE_TAG} -n your-namespace
+                """
+            }
+        }
     }
 
     post {
         success {
-            echo "Docker image pushed successfully!"
+            echo "Docker image pushed and deployment updated successfully!"
         }
         failure {
-            echo "Build or push failed!"
+            echo "Build, push or deploy failed!"
         }
     }
 }
