@@ -2,42 +2,52 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "lorexhub/lorex-app-fe"
-        TAG = "${new Date().format('yyyyMMddHHmmss')}"
-        DEPLOYMENT_FILE = "k8s/deployment.yaml"
+        IMAGE_NAME = "damith47/k8s_web_app_01"
+        IMAGE_TAG = "latest"
+        DOCKER_IMAGE = "${IMAGE_NAME}:${IMAGE_TAG}"
+        KUBECONFIG_CREDENTIAL_ID = "kubeconfig-creds"   // Jenkins credential ID for kubeconfig
     }
 
     stages {
-        stage('Build Docker Image') {
+        stage('Checkout Code') {
             steps {
-                sh 'docker build -t $IMAGE_NAME:$TAG .'
+                git branch: 'main', url: 'https://github.com/damith47/k8s_web_app_01.git'
             }
         }
 
-        stage('Update Deployment YAML') {
+        stage('Build Docker Image') {
             steps {
-                sh '''
-                sed -i "s|image: .*|image: $IMAGE_NAME:$TAG\\n        imagePullPolicy: Never|" $DEPLOYMENT_FILE
-                '''
+                bat "docker build -t %DOCKER_IMAGE% ."
+            }
+        }
+
+        stage('Push Docker Image to DockerHub') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    bat "echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin"
+                    bat "docker push %DOCKER_IMAGE%"
+                }
             }
         }
 
         stage('Deploy to Kubernetes') {
             steps {
-                sh 'kubectl apply -f $DEPLOYMENT_FILE'
-            }
-        }
-
-        stage('Rollout Restart (optional)') {
-            steps {
-                sh 'kubectl rollout restart deployment lorex-app-fe-deployment'
+                withCredentials([file(credentialsId: "${KUBECONFIG_CREDENTIAL_ID}", variable: 'KUBECONFIG_FILE')]) {
+                    bat '''
+                    set KUBECONFIG=%KUBECONFIG_FILE%
+                    kubectl set image deployment/k8s-web-app web-app=%DOCKER_IMAGE% --record
+                    '''
+                }
             }
         }
     }
 
     post {
         success {
-            echo "✅ Deployment updated at http://172.20.10.10:30082/"
+            echo 'Deployment completed successfully!'
+        }
+        failure {
+            echo 'Deployment failed!'
         }
     }
 }
