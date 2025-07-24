@@ -44,8 +44,8 @@ pipeline {
             steps {
                 echo 'Updating Kubernetes deployment...'
                 bat """
-                   kubectl set image deployment/lorexweb1-deployment lorexweb1-container=${IMAGE_NAME}:${IMAGE_TAG} -n lorexapp
-                   kubectl rollout status deployment/lorexweb1-deployment -n lorexapp
+                   kubectl set image deployment/lorex-app-fe lorex-app-fe=${IMAGE_NAME}:${IMAGE_TAG} -n lorexapp
+                   kubectl rollout status deployment/lorex-app-fe -n lorexapp
                 """
             }
         }
