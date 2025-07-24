@@ -4,7 +4,6 @@ pipeline {
     environment {
         IMAGE_NAME = 'lorexhub/lorexweb1'
         IMAGE_TAG = 'latest'
-        // Use double backslashes in Windows path
         KUBECONFIG = 'C:\\Users\\Damith.Patabandige\\.kube\\config'
     }
 
@@ -45,8 +44,8 @@ pipeline {
             steps {
                 echo 'Updating Kubernetes deployment...'
                 bat """
-                   kubectl set image deployment/your-deployment-name your-container-name=${IMAGE_NAME}:${IMAGE_TAG} -n your-namespace
-                   kubectl rollout status deployment/your-deployment-name -n your-namespace
+                   kubectl set image deployment/lorexweb1-deployment lorexweb1-container=${IMAGE_NAME}:${IMAGE_TAG} -n lorexapp
+                   kubectl rollout status deployment/lorexweb1-deployment -n lorexapp
                 """
             }
         }
