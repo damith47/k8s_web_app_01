@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: lorex-app-fe
-        image: lorexhub/lorexweb1:latest  
+        image: lorexhub/lorexweb1:2
         imagePullPolicy: Always
         ports:
         - containerPort: 80
