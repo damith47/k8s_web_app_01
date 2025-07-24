@@ -2,55 +2,48 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "lorexhub/lorex-webapp"
-        DOCKER_CREDENTIALS_ID = 'dockerhub-creds'
-    }
-
-    parameters {
-        string(name: 'BRANCH', defaultValue: 'main', description: 'Git branch to build from')
+        IMAGE_NAME = "lorexhub/lorex-app-fe"
+        TAG = "${new Date().format('yyyyMMddHHmmss')}"
+        DEPLOYMENT_FILE = "k8s/deployment.yaml"
     }
 
     stages {
-        stage('Checkout Code') {
+        stage('Clone Repo') {
             steps {
-                git branch: "${params.BRANCH}", url: 'https://github.com/your-username/your-repo.git'
+                git 'https://github.com/damith47/k8s_web_app_01.git'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    docker.build("${IMAGE_NAME}:latest")
-                }
+                sh 'docker build -t $IMAGE_NAME:$TAG .'
             }
         }
 
-        stage('Push to Docker Hub') {
+        stage('Update Deployment YAML') {
             steps {
-                script {
-                    docker.withRegistry('https://index.docker.io/v1/', "${DOCKER_CREDENTIALS_ID}") {
-                        docker.image("${IMAGE_NAME}:latest").push()
-                    }
-                }
+                sh '''
+                sed -i "s|image: .*|image: $IMAGE_NAME:$TAG\\n        imagePullPolicy: Never|" $DEPLOYMENT_FILE
+                '''
             }
         }
 
         stage('Deploy to Kubernetes') {
             steps {
-                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
-                    bat 'kubectl apply -f k8s/deployment.yaml --validate=false'
-                    bat 'kubectl apply -f k8s/service.yaml --validate=false'
-                }
+                sh 'kubectl apply -f $DEPLOYMENT_FILE'
+            }
+        }
+
+        stage('Rollout Restart (optional)') {
+            steps {
+                sh 'kubectl rollout restart deployment lorex-app-fe-deployment'
             }
         }
     }
 
     post {
-        failure {
-            echo "❌ Pipeline failed."
-        }
         success {
-            echo "✅ Deployment completed successfully. App should be available at: http://172.20.10.10:30080/"
+            echo "✅ Deployment updated at http://172.20.10.10:30082/"
         }
     }
 }
