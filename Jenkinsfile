@@ -8,12 +8,6 @@ pipeline {
     }
 
     stages {
-        stage('Clone Repo') {
-            steps {
-                git 'https://github.com/damith47/k8s_web_app_01.git'
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t $IMAGE_NAME:$TAG .'
