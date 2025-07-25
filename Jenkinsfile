@@ -40,7 +40,7 @@ pipeline {
         stage('Update Deployment YAML') {
             steps {
                 script {
-                    def yamlFile = 'k8s/combined-deployment-service.yaml'
+                    def yamlFile = 'k8s/deployment.yaml'
                     def updatedYaml = readFile(yamlFile).replace('__REPLACE_TAG__', params.IMAGE_TAG)
                     writeFile file: yamlFile, text: updatedYaml
                 }
@@ -49,7 +49,7 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                bat "kubectl apply -f k8s/combined-deployment-service.yaml -n lorexapp"
+                bat "kubectl apply -f k8s/deployment.yaml -n lorexapp"
                 bat "kubectl rollout status deployment/lorex-app-fe -n lorexapp"
             }
         }
