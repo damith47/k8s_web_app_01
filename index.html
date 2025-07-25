@@ -59,7 +59,7 @@
 </head>
 <body>
   <div class="container">
-    <h1>Project: Jenkins CI/CD Pipeline for Dockerized Kubernetes Deployment</h1>
+    <h1>Jenkins CI/CD Pipeline for Dockerized Kubernetes Deployment</h1>
 
     <div class="section">
       <h2>CI/CD Overview</h2>
@@ -75,17 +75,17 @@
       <h2>Tools and Technologies Used</h2>
       <ul>
         <li><strong>Jenkins</strong>: Automates the build, Docker image creation, and deployment</li>
-        <li><strong>Docker</strong>: Packages your web app into an image</li>
+        <li><strong>Docker</strong>: Packages web app into an image</li>
         <li><strong>Docker Hub</strong>: Stores the built image remotely</li>
         <li><strong>Kubernetes (k8s)</strong>: Orchestrates container deployment</li>
         <li><strong>YAML</strong>: Defines k8s Deployment & Service</li>
-        <li><strong>VirtualBox VMs</strong>: Used to run your local Kubernetes cluster (master + workers)</li>
+        <li><strong>VirtualBox VMs</strong>: Used to run local Kubernetes cluster (master + workers)</li>
       </ul>
     </div>
 
     <div class="section">
       <h2>How to Host the Web App</h2>
-      <h3>🖥️ 1. Develop Your Web App</h3>
+      <h3>1. Develop Your Web App</h3>
       <ul>
         <li>Simple HTML + CSS frontend.</li>
         <li>Store in a GitHub or local Git repo.</li>
@@ -112,8 +112,8 @@
       <h2>4. Access Your App</h2>
       <p>Once deployed, visit your app in the browser:</p>
       <ul>
-        <li><code>http://&lt;your-node-ip&gt;:30080</code></li>
-        <li>e.g. <code>http://192.168.8.103:30080</code></li>
+        <li><code>http://&lt;master-node-ip&gt;:30080</code></li>
+        <li>e.g. <code>http://172.20.10.10:30080/</code></li>
       </ul>
     </div>
 
@@ -137,7 +137,7 @@
     <div style="text-align:center; margin-top:40px;">
       <a href="https://github.com/damith47" target="_blank" style="text-decoration: none;">
         <button style="background-color: #24292e; color: white; padding: 10px 20px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
-    🔗 Powered by LoReX
+          Powered by LoReX
          </button>
       </a>
     </div>
