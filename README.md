@@ -1,5 +1,7 @@
 ✅ Project: Jenkins CI/CD Pipeline for Dockerized Kubernetes Deployment
 
+![Alt text](https://github.com/damith47/k8s_web_app_01/blob/b5c17dab218278ad22c9294d5e45dc6810328915/Diagram.png)
+
 --CI/CD pipeline using Jenkins, Docker, and Kubernetes--
 
 1. Builds a Docker image for a frontend web app.
