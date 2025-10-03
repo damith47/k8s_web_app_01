@@ -1,66 +1,137 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LoReX</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>LoReX — Lightweight Web</title>
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background: linear-gradient(120deg, #7b61ff, #7ee7f7);
-      color: white;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+    :root{
+      --bg:#0f1724; /* dark navy */
+      --card:#0b1220;
+      --muted:#98a0b3;
+      --accent:#7dd3fc; /* light cyan */
+      --glass: rgba(255,255,255,0.03);
+      --radius:12px;
+      --max-width:1000px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     }
 
-    h1 {
-      font-size: 3em;
-      margin: 0;
-      animation: fadeIn 2s ease-in-out;
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;min-height:100%;
+      background: radial-gradient(1000px 400px at 10% 10%, rgba(125,211,252,0.06), transparent 10%),
+                  linear-gradient(180deg,#071026 0%, var(--bg) 100%);
+      color:#e6eef8;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:36px 20px;
+      display:flex;align-items:center;justify-content:center;
     }
 
-    p {
-      font-size: 1.2em;
-      margin: 10px 0 20px 0;
-      animation: slideUp 2s ease;
+    .wrap{width:100%;max-width:var(--max-width);}
+
+    header{
+      display:flex;align-items:center;justify-content:space-between;
+      gap:16px;margin-bottom:20px;
+    }
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{
+      width:52px;height:52px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#60a5fa);
+      display:flex;align-items:center;justify-content:center;color:#042029;font-weight:700;font-size:18px;box-shadow:0 6px 18px rgba(8,12,20,0.6);
+    }
+    h1{font-size:18px;margin:0}
+    .nav{display:flex;gap:12px;align-items:center;color:var(--muted);font-size:14px}
+    .btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 12px;border-radius:10px;color:var(--muted);font-weight:600}
+
+    .hero{
+      display:grid;grid-template-columns:1fr 360px;gap:24px;align-items:center;
     }
 
-    button {
-      padding: 12px 24px;
-      font-size: 1em;
-      font-weight: bold;
-      border: none;
-      border-radius: 8px;
-      background: white;
-      color: #7b61ff;
-      cursor: pointer;
-      transition: transform 0.3s;
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:var(--radius);padding:22px;box-shadow:0 8px 30px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.03);
     }
 
-    button:hover {
-      transform: scale(1.1);
+    .intro h2{margin:0 0 8px 0;font-size:28px}
+    .intro p{margin:0;color:var(--muted);line-height:1.6}
+
+    .features{display:flex;flex-direction:column;gap:12px;margin-top:18px}
+    .feature{display:flex;gap:12px;align-items:flex-start}
+    .dot{flex:0 0 44px;height:44px;border-radius:10px;background:var(--glass);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--accent);border:1px solid rgba(255,255,255,0.03)}
+    .ftext{font-size:14px;color:#dfe9f8}
+    .ftext small{display:block;color:var(--muted);font-size:13px;margin-top:6px}
+
+    .mock{display:flex;flex-direction:column;gap:12px}
+    .screen{background:linear-gradient(180deg,#041226 0%, #071025 100%);border-radius:10px;padding:14px;min-height:180px;border:1px solid rgba(255,255,255,0.02)}
+    .menu{display:flex;gap:8px;align-items:center;margin-bottom:10px}
+    .menu span{width:42px;height:8px;border-radius:6px;background:rgba(255,255,255,0.03);display:inline-block}
+    .content{background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:8px;padding:12px;height:100%;display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:700}
+
+    footer{margin-top:18px;display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px}
+
+    /* responsive */
+    @media (max-width:880px){
+      .hero{grid-template-columns:1fr;}
+      .mock{order:2}
     }
 
-    /* Simple animations */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.8); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    @keyframes slideUp {
-      from { transform: translateY(50px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
   </style>
 </head>
 <body>
-  <h1>Welcome to LoReX</h1>
-  <p>Simple, clean, and modern web design.</p>
-  <button>Get Started</button>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo">LoR</div>
+        <div>
+          <h1>LoReX</h1>
+          <div style="color:var(--muted);font-size:12px">Lightweight UI for demos & docs</div>
+        </div>
+      </div>
+      <nav class="nav">
+        <div class="btn">Docs</div>
+        <div class="btn">Download</div>
+      </nav>
+    </header>
+
+    <main class="hero">
+      <section class="card intro">
+        <h2>Testing on going...</h2>
+        <p>LoReX is a tiny, dependency-free single-file HTML/CSS starter you can drop into any demo, prototype or README. Small, readable, and tuned for clarity.</p>
+
+        <div class="features">
+          <div class="feature">
+            <div class="dot">✓</div>
+            <div class="ftext">No frameworks — pure HTML & CSS. <small>Works offline and in any browser.</small></div>
+          </div>
+
+          <div class="feature">
+            <div class="dot">⚡</div>
+            <div class="ftext">Optimized for small size and readability. <small>Easy to customize.</small></div>
+          </div>
+
+          <div class="feature">
+            <div class="dot">📱</div>
+            <div class="ftext">Responsive by default. <small>Looks good on phones and desktops.</small></div>
+          </div>
+        </div>
+
+      </section>
+
+      <aside class="mock card">
+        <div class="menu">
+          <span></span><span style="width:30px"></span><span style="width:16px"></span>
+        </div>
+        <div class="screen">
+          <div class="content">LoReX demo preview</div>
+        </div>
+        <footer style="margin-top:8px">Theme: <strong>Dark</strong></footer>
+      </aside>
+    </main>
+
+    <footer class="card" style="margin-top:18px;display:flex;align-items:center;justify-content:space-between;">
+      <div>© LoReX — tiny starter</div>
+      <div style="color:var(--muted);font-size:13px">Save this file as <strong>index.html</strong> and open it in your browser.</div>
+    </footer>
+  </div>
 </body>
 </html>
