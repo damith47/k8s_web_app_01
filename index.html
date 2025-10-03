@@ -1,413 +1,66 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>LoReX — Lightweight Xperience</title>
-
-  <!-- Google font (optional) -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LoReX</title>
   <style>
-    /* ===========================
-       LoReX — index.html (HTML+CSS)
-       =========================== */
-
-    :root{
-      --bg-1: #0f1724;        /* deep navy */
-      --bg-2: #071129;        /* darker */
-      --accent-1: #7ee7f7;    /* cyan */
-      --accent-2: #7b61ff;    /* violet */
-      --glass: rgba(255,255,255,0.06);
-      --card: rgba(255,255,255,0.03);
-      --muted: rgba(255,255,255,0.6);
-      --radius: 14px;
-      --max-width: 1100px;
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: linear-gradient(120deg, #7b61ff, #7ee7f7);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
 
-    /* Base resets */
-    * { box-sizing: border-box; }
-    html,body{ height:100%; }
-    body{
-      margin:0;
-      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      background: radial-gradient(1200px 600px at 10% 10%, rgba(123,97,255,0.08), transparent 8%),
-                  radial-gradient(900px 500px at 90% 85%, rgba(126,231,247,0.04), transparent 10%),
-                  linear-gradient(180deg, var(--bg-1), var(--bg-2));
-      color:#eaf6ff;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      padding:48px 20px;
-      display:flex;
-      justify-content:center;
-      align-items:flex-start;
-      gap:20px;
-      min-height:100vh;
-      overflow-x:hidden;
+    h1 {
+      font-size: 3em;
+      margin: 0;
+      animation: fadeIn 2s ease-in-out;
     }
 
-    /* animated gradient glow behind header */
-    .glow {
-      position: absolute;
-      inset: -20%;
-      z-index:0;
-      filter: blur(120px) saturate(120%);
-      background: conic-gradient(from 180deg at 50% 50%, rgba(123,97,255,0.12), rgba(126,231,247,0.12), rgba(255,120,120,0.06), rgba(123,97,255,0.12));
-      animation: spin 18s linear infinite;
-      mix-blend-mode: screen;
-      pointer-events:none;
-      opacity:0.7;
-    }
-    @keyframes spin {
-      to { transform: rotate(1turn); }
+    p {
+      font-size: 1.2em;
+      margin: 10px 0 20px 0;
+      animation: slideUp 2s ease;
     }
 
-    .container{
-      position:relative;
-      z-index:1;
-      max-width:var(--max-width);
-      width:100%;
-      display:grid;
-      grid-template-columns: 1fr 380px;
-      gap:28px;
-      align-items:start;
+    button {
+      padding: 12px 24px;
+      font-size: 1em;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      background: white;
+      color: #7b61ff;
+      cursor: pointer;
+      transition: transform 0.3s;
     }
 
-    /* Responsive layout */
-    @media (max-width:980px){
-      .container{ grid-template-columns: 1fr; padding-bottom:60px; }
+    button:hover {
+      transform: scale(1.1);
     }
 
-    /* Left: hero */
-    .hero{
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
-      border-radius: var(--radius);
-      padding:36px;
-      box-shadow: 0 6px 30px rgba(2,6,23,0.7), inset 0 1px 0 rgba(255,255,255,0.02);
-      backdrop-filter: blur(6px);
-      border: 1px solid rgba(255,255,255,0.03);
+    /* Simple animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
     }
 
-    .brand {
-      display:flex;
-      gap:14px;
-      align-items:center;
-      margin-bottom:18px;
+    @keyframes slideUp {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
-
-    .logo {
-      width:68px;
-      height:68px;
-      border-radius:12px;
-      display:grid;
-      place-items:center;
-      background: linear-gradient(135deg, var(--accent-2), var(--accent-1));
-      box-shadow: 0 6px 20px rgba(123,97,255,0.16);
-      transform: translateZ(0);
-    }
-
-    /* simple SVG mark inside logo */
-    .logo svg { width:44px; height:44px; display:block; filter:drop-shadow(0 4px 10px rgba(0,0,0,0.35)); }
-
-    .brand h1{
-      font-size:22px;
-      margin:0;
-      letter-spacing: -0.4px;
-      line-height:1;
-    }
-    .brand p { margin:2px 0 0 0; font-size:13px; color:var(--muted); }
-
-    .hero-title{
-      margin: 18px 0 12px 0;
-      font-size:34px;
-      line-height:1.02;
-      letter-spacing:-0.6px;
-      margin-bottom:12px;
-      color: #ecf9ff;
-    }
-
-    .lead {
-      color:var(--muted);
-      margin-bottom:18px;
-      max-width:60ch;
-    }
-
-    /* CTA row */
-    .cta {
-      display:flex;
-      gap:12px;
-      align-items:center;
-      margin-bottom:26px;
-    }
-    .btn {
-      appearance:none;
-      border:0;
-      padding:12px 16px;
-      border-radius:10px;
-      font-weight:600;
-      cursor:pointer;
-      background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-      color:#ecf9ff;
-      transition: transform .18s ease, box-shadow .18s ease;
-      box-shadow: 0 6px 18px rgba(2,6,23,0.6);
-      display:inline-flex;
-      gap:10px;
-      align-items:center;
-    }
-    .btn-primary{
-      background: linear-gradient(90deg,var(--accent-1), var(--accent-2));
-      color: #031025;
-      padding:12px 18px;
-      box-shadow: 0 10px 30px rgba(123,97,255,0.14);
-    }
-    .btn:hover{ transform: translateY(-4px); }
-    .btn:active{ transform: translateY(-1px); }
-
-    /* animated feature cards */
-    .features{
-      display:grid;
-      gap:14px;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-    }
-    @media (max-width:640px){
-      .features{ grid-template-columns: 1fr; }
-    }
-    .card {
-      background: var(--card);
-      border-radius:12px;
-      padding:14px;
-      border:1px solid rgba(255,255,255,0.02);
-      display:flex;
-      gap:12px;
-      align-items:flex-start;
-      transform: translateY(0);
-      transition: transform .5s cubic-bezier(.2,.9,.3,1), box-shadow .3s;
-    }
-    .card:hover{
-      transform: translateY(-8px) scale(1.01);
-      box-shadow: 0 18px 40px rgba(2,6,23,0.55);
-    }
-    .card .icon {
-      min-width:48px;
-      min-height:48px;
-      border-radius:10px;
-      display:grid;
-      place-items:center;
-      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-      font-weight:700;
-      color:var(--accent-2);
-      font-size:18px;
-      flex-shrink:0;
-    }
-    .card h3{ margin:0; font-size:15px; }
-    .card p{ margin:6px 0 0 0; color:var(--muted); font-size:13px; }
-
-    /* right column: info panel */
-    .panel{
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
-      border-radius: var(--radius);
-      padding:18px;
-      height:100%;
-      position:sticky;
-      top:36px;
-      border:1px solid rgba(255,255,255,0.03);
-      box-shadow: 0 8px 30px rgba(2,6,23,0.6);
-    }
-
-    .status {
-      display:flex;
-      gap:12px;
-      align-items:center;
-      margin-bottom:14px;
-    }
-    .dot {
-      width:12px; height:12px; border-radius:999px;
-      background: linear-gradient(180deg, #6fffe9, #2fd1ff);
-      box-shadow: 0 6px 18px rgba(47,209,255,0.12), inset 0 -2px 4px rgba(0,0,0,0.12);
-    }
-    .small { font-size:13px; color:var(--muted); }
-
-    /* live pulse */
-    .live {
-      display:inline-grid;
-      place-items:center;
-      gap:8px;
-      padding:10px 12px;
-      border-radius:10px;
-      background: linear-gradient(90deg, rgba(123,97,255,0.06), rgba(126,231,247,0.03));
-      font-weight:600;
-    }
-    .pulse {
-      width:10px;height:10px;border-radius:999px;background:var(--accent-1);
-      animation: pulse 1.6s infinite;
-      box-shadow: 0 6px 18px rgba(126,231,247,0.12);
-    }
-    @keyframes pulse {
-      0% { transform:scale(.9); opacity:1; }
-      70% { transform:scale(1.6); opacity:.18; }
-      100% { transform:scale(.9); opacity:1; }
-    }
-
-    /* small status list (animated rows) */
-    .status-list { display:flex; flex-direction:column; gap:10px; margin-top:10px; }
-    .status-item {
-      padding:10px; border-radius:10px; background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
-      transition: transform .45s, box-shadow .45s;
-      border:1px solid rgba(255,255,255,0.02);
-    }
-    .status-item:hover{ transform: translateX(6px); box-shadow: 0 12px 30px rgba(2,6,23,0.55); }
-
-    /* footer */
-    footer{ margin-top:20px; color:var(--muted); font-size:13px; text-align:center; }
-
-    /* tiny decorative floated rings (CSS-only animation) */
-    .ring {
-      position:absolute;
-      width:140px; height:140px; border-radius:999px;
-      border:1px dashed rgba(255,255,255,0.03);
-      top: -30px; right: -30px; transform:rotate(0deg);
-      animation: floaty 8s ease-in-out infinite;
-      opacity:.9;
-      pointer-events:none;
-    }
-    @keyframes floaty {
-      0% { transform:translateY(0) rotate(0deg); }
-      50%{ transform:translateY(-18px) rotate(12deg); }
-      100%{ transform:translateY(0) rotate(0deg); }
-    }
-
-    /* small helper */
-    .muted { color:var(--muted); font-size:13px; }
-
   </style>
 </head>
 <body>
-  <div class="glow" aria-hidden="true"></div>
-
-  <div class="container" role="main">
-    <!-- LEFT: Hero & features -->
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="brand" role="banner">
-        <div class="logo" aria-hidden="true">
-          <!-- simple abstract 'L' mark -->
-          <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <rect x="6" y="18" width="10" height="34" rx="3" fill="#031025" opacity="0.12"/>
-            <path d="M16 18 L46 18 L46 28 L26 28 L26 46 L16 46 Z" fill="white" />
-          </svg>
-        </div>
-        <div>
-          <h1>LoReX</h1>
-          <p class="muted">Lightweight experience — elegant UI, simple tools</p>
-        </div>
-      </div>
-
-      <h2 id="hero-title" class="hero-title">Build faster interfaces. Ship with confidence.</h2>
-      <p class="lead">LoReX is a minimal UI scaffold designed for small apps and landing pages. It focuses on clarity, subtle motion and fast performance — everything needed to present your product with style.</p>
-
-      <div class="cta" role="region" aria-label="Call to action">
-        <button class="btn btn-primary" title="Get started">
-          <!-- small lightning SVG -->
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M13 2L3 14h7l-1 8L21 10h-7l-1-8z" fill="white"></path>
-          </svg>
-          Get started
-        </button>
-        <button class="btn" title="Explore docs">Explore docs</button>
-      </div>
-
-      <div class="features" aria-label="Key features">
-        <article class="card" role="article">
-          <div class="icon">⚡</div>
-          <div>
-            <h3>Snappy performance</h3>
-            <p>Tiny CSS, no frameworks required. Designed for speed on mobile and desktop.</p>
-          </div>
-        </article>
-
-        <article class="card" role="article">
-          <div class="icon">🎛️</div>
-          <div>
-            <h3>Customizable</h3>
-            <p>Easy variables and components that you can adapt to your brand in minutes.</p>
-          </div>
-        </article>
-
-        <article class="card" role="article">
-          <div class="icon">🖼️</div>
-          <div>
-            <h3>Polished visuals</h3>
-            <p>Subtle depth, glassy surfaces and tasteful motion make the UI feel alive.</p>
-          </div>
-        </article>
-
-        <article class="card" role="article">
-          <div class="icon">🔒</div>
-          <div>
-            <h3>Secure defaults</h3>
-            <p>Accessible markup and sensible contrasts so your content is readable for everyone.</p>
-          </div>
-        </article>
-      </div>
-
-      <footer class="muted" aria-hidden="false">© <strong>LoReX</strong> — handcrafted UI • Made with CSS</footer>
-    </section>
-
-    <!-- RIGHT: info / live panel -->
-    <aside class="panel" aria-labelledby="panel-title">
-      <div class="status">
-        <div style="flex:1">
-          <div class="small">System</div>
-          <div style="font-weight:700; margin-top:6px;">LoReX Engine</div>
-        </div>
-
-        <div style="text-align:right">
-          <div class="live" aria-live="polite">
-            <div class="pulse" aria-hidden="true"></div>
-            <div style="font-size:12px; color:var(--muted);">Live</div>
-          </div>
-        </div>
-      </div>
-
-      <h3 id="panel-title" style="margin:6px 0 10px 0">Status & quick actions</h3>
-
-      <div class="status-list" aria-hidden="false">
-        <div class="status-item">
-          <div>
-            <div style="font-weight:600">API</div>
-            <div class="small">Healthy — 12ms p95</div>
-          </div>
-          <div class="muted">v1.2.4</div>
-        </div>
-
-        <div class="status-item">
-          <div>
-            <div style="font-weight:600">Database</div>
-            <div class="small">Replicas synced</div>
-          </div>
-          <div class="muted">3/3</div>
-        </div>
-
-        <div class="status-item" title="Redeploy">
-          <div>
-            <div style="font-weight:600">Frontend</div>
-            <div class="small">Last build 12m ago</div>
-          </div>
-          <div><button class="btn" style="padding:8px 10px;font-size:13px">Redeploy</button></div>
-        </div>
-      </div>
-
-      <div style="height:10px"></div>
-      <div class="muted">Quick links</div>
-      <nav style="display:flex; gap:8px; margin-top:8px; flex-wrap:wrap;">
-        <button class="btn" style="padding:8px 10px;font-size:13px">Metrics</button>
-        <button class="btn" style="padding:8px 10px;font-size:13px">Logs</button>
-        <button class="btn" style="padding:8px 10px;font-size:13px">Settings</button>
-      </nav>
-
-      <!-- decorative element -->
-      <div class="ring" aria-hidden="true"></div>
-    </aside>
-  </div>
+  <h1>Welcome to LoReX</h1>
+  <p>Simple, clean, and modern web design.</p>
+  <button>Get Started</button>
 </body>
 </html>
